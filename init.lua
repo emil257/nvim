@@ -18,7 +18,5 @@ vim.diagnostic.config({
 	virtual_text = true,
 })
 
--- test
-
 require("vim-options")
 require("lazy").setup("plugins")
