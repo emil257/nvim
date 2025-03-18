@@ -20,6 +20,17 @@ return {
             require("telescope.themes").get_dropdown {
             }
           }
+        },
+        defaults = {
+          -- Ignore specific folders
+          file_ignore_patterns = {
+            "node_modules/",
+            "dist/",
+            "build/",
+            "vendor/",
+            "*/.git/*",
+            "*/.hg/*"
+          },
         }
       }
       require("telescope").load_extension("ui-select")
