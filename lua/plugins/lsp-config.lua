@@ -6,7 +6,7 @@ return {
 		config = function()
 			require("mason").setup()
 			require("mason-null-ls").setup({
-				ensure_installed = { "stylua" },
+				ensure_installed = { "stylua", "xmlformatter" },
 			})
 		end,
 	},
@@ -14,7 +14,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		lazy = false,
 		opts = {
-			ensure_installed = { "lua_ls", "ts_ls", "html" },
+			ensure_installed = { "lua_ls", "ts_ls", "html", "clangd" },
 			auto_install = true,
 		},
 	},
