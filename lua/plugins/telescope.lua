@@ -23,6 +23,11 @@ return {
           }
         },
         defaults = {
+					layout_strategy = "vertical",
+					layout_config = {
+						width = 0.95,
+						height = 0.95,
+					},
           -- Ignore specific folders
           file_ignore_patterns = {
             "node_modules/",
