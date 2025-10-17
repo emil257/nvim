@@ -59,7 +59,7 @@ return {
 				}
 				-- Run dotnet publish in repo root
 				-- vim.fn.system({ "dotnet", "publish", "-c", "Release", "-r", "osx-arm64", "--self-contained", "true" }, mason_dir .. "/Server")
-				print(vim.system(cmd, { cwd = mason_dir .. "/Server"}))
+				vim.system(cmd, { cwd = mason_dir .. "/Server"})
 			end
 
 			-- Step 3: Register custom LSP
