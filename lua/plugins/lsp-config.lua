@@ -28,6 +28,12 @@ return {
 			local util = require("lspconfig.util")
 			local uv = vim.loop
 
+			vim.filetype.add({
+				extension = {
+					compute = "compute",
+				},
+			})
+
 			-- Paths
 			local mason_dir = vim.fn.stdpath("data") .. "/mason/packages/shader-language-server"
 			local publish_dir_intel  = mason_dir .. "/Server/bin/Release/net7.0/osx-x64/publish/shader-ls"
@@ -67,7 +73,7 @@ return {
 				configs.shader_lang = {
 					default_config = {
 						cmd = { shader_ls_bin, "--stdio" },
-						filetypes = { "glsl", "hlsl", "wgsl", "shader", "gdshader" },
+						filetypes = { "glsl", "hlsl", "wgsl", "shader", "gdshader", "compute" },
 						root_dir = util.root_pattern(".git", "."),
 						single_file_support = true,
 					},
