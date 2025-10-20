@@ -40,11 +40,11 @@ return {
 			-- Step 1: Clone if missing
 			if uv.fs_stat(mason_dir) == nil then
 				print("[ShaderLS] Cloning shader-language-server...")
-				vim.fn.system({
+				vim.system({
 					"git", "clone", "--depth=1",
 					"https://github.com/shader-ls/shader-language-server.git",
 					mason_dir,
-				})
+				}):wait()
 			end
 
 			-- Step 2: Build/publish if binary missing
@@ -59,7 +59,7 @@ return {
 				}
 				-- Run dotnet publish in repo root
 				-- vim.fn.system({ "dotnet", "publish", "-c", "Release", "-r", "osx-arm64", "--self-contained", "true" }, mason_dir .. "/Server")
-				vim.system(cmd, { cwd = mason_dir .. "/Server"})
+				vim.system(cmd, { cwd = mason_dir .. "/Server" }):wait()
 			end
 
 			-- Step 3: Register custom LSP
