@@ -30,7 +30,8 @@ return {
 
 			vim.filetype.add({
 				extension = {
-					compute = "compute",
+					compute = "hlsl",
+					hlsl = "hlsl"
 				},
 			})
 
