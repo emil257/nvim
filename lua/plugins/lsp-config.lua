@@ -14,7 +14,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		lazy = false,
 		opts = {
-			ensure_installed = { "lua_ls", "ts_ls", "html", "clangd", "csharp_ls", "glsl_analyzer" },
+			ensure_installed = { "lua_ls", "ts_ls", "html", "clangd", "glsl_analyzer", "omnisharp", "angularls" },
 			auto_install = true,
 		},
 	},
@@ -31,14 +31,14 @@ return {
 			vim.filetype.add({
 				extension = {
 					compute = "hlsl",
-					hlsl = "hlsl"
+					hlsl = "hlsl",
 				},
 			})
 
 			-- Paths
 			local mason_dir = vim.fn.stdpath("data") .. "/mason/packages/shader-language-server"
-			local publish_dir_intel  = mason_dir .. "/Server/bin/Release/net7.0/osx-x64/publish/shader-ls"
-			local publish_dir_arm    = mason_dir .. "/Server/bin/Release/net7.0/osx-arm64/publish/shader-ls"
+			local publish_dir_intel = mason_dir .. "/Server/bin/Release/net7.0/osx-x64/publish/shader-ls"
+			local publish_dir_arm = mason_dir .. "/Server/bin/Release/net7.0/osx-arm64/publish/shader-ls"
 
 			-- Detect architecture
 			local arch = vim.loop.os_uname().machine
@@ -48,7 +48,9 @@ return {
 			if uv.fs_stat(mason_dir) == nil then
 				print("[ShaderLS] Cloning shader-language-server...")
 				vim.system({
-					"git", "clone", "--depth=1",
+					"git",
+					"clone",
+					"--depth=1",
 					"https://github.com/shader-ls/shader-language-server.git",
 					mason_dir,
 				}):wait()
@@ -59,10 +61,14 @@ return {
 				print("[ShaderLS] Publishing self-contained executable for " .. arch .. "...")
 				local target_rid = (arch == "arm64") and "osx-arm64" or "osx-x64"
 				local cmd = {
-					"dotnet", "publish",
-					"-c", "Release",
-					"-r", target_rid,
-					"--self-contained", true
+					"dotnet",
+					"publish",
+					"-c",
+					"Release",
+					"-r",
+					target_rid,
+					"--self-contained",
+					true,
 				}
 				-- Run dotnet publish in repo root
 				-- vim.fn.system({ "dotnet", "publish", "-c", "Release", "-r", "osx-arm64", "--self-contained", "true" }, mason_dir .. "/Server")
@@ -74,7 +80,7 @@ return {
 				configs.shader_lang = {
 					default_config = {
 						cmd = { shader_ls_bin, "--stdio" },
-						filetypes = { "glsl", "hlsl", "wgsl", "shader", "gdshader", "compute" },
+						filetypes = { "glsl", "hlsl", "wgsl", "shader", "gdshader" },
 						root_dir = util.root_pattern(".git", "."),
 						single_file_support = true,
 					},
@@ -87,14 +93,24 @@ return {
 				}
 			end
 
+			local omnisharp_path = vim.fn.expand("~/.local/share/nvim/mason/bin/omnisharp")
+
 			lspconfig.ts_ls.setup({ capabilities = capabilities })
+			lspconfig.angularls.setup({ capabilities = capabilities })
 			lspconfig.html.setup({ capabilities = capabilities })
 			lspconfig.lua_ls.setup({ capabilities = capabilities })
 			lspconfig.clangd.setup({ capabilities = capabilities })
-			lspconfig.csharp_ls.setup({ capabilities = capabilities })
+			lspconfig.omnisharp.setup({
+				capabilities = capabilities,
+				cmd = { omnisharp_path, "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
+				root_dir = require("lspconfig.util").root_pattern("*.sln", "*.csproj", ".git"),
+				enable_roslyn_analyzers = true,
+				organize_imports_on_format = true,
+				sdk_include_prereleases = true,
+			})
 			lspconfig.glsl_analyzer.setup({
 				capabilities = capabilities,
-				filetypes = { "vert", "frag", "geom", "comp"},
+				filetypes = { "vert", "frag", "geom", "comp" },
 			})
 			lspconfig.shader_lang.setup({
 				capabilities = capabilities,

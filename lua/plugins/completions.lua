@@ -2,13 +2,13 @@ return {
   {
     "hrsh7th/cmp-nvim-lsp",
   },
-  -- {
-  --   "github/copilot.vim",
-  -- },
   {
-    "Exafunction/windsurf.vim",
-    event = "BufEnter",
+    "github/copilot.vim",
   },
+  -- {
+  --   "Exafunction/windsurf.vim",
+  --   event = "BufEnter",
+  -- },
   {
     "L3MON4D3/LuaSnip",
     dependencies = {
