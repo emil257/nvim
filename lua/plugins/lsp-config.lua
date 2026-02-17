@@ -23,7 +23,7 @@ return {
 		lazy = false,
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local lspconfig = require("lspconfig")
+			-- local lspconfig = require("lspconfig")
 			local configs = require("lspconfig.configs")
 			local util = require("lspconfig.util")
 			local uv = vim.loop
@@ -95,12 +95,12 @@ return {
 
 			local omnisharp_path = vim.fn.expand("~/.local/share/nvim/mason/bin/omnisharp")
 
-			lspconfig.ts_ls.setup({ capabilities = capabilities })
-			lspconfig.angularls.setup({ capabilities = capabilities })
-			lspconfig.html.setup({ capabilities = capabilities })
-			lspconfig.lua_ls.setup({ capabilities = capabilities })
-			lspconfig.clangd.setup({ capabilities = capabilities })
-			lspconfig.omnisharp.setup({
+			vim.lsp.config("ts_ls",{ capabilities = capabilities })
+			vim.lsp.config("angularls", { capabilities = capabilities })
+			vim.lsp.config("html", { capabilities = capabilities })
+			vim.lsp.config("lua_ls", { capabilities = capabilities })
+			vim.lsp.config("clangd", { capabilities = capabilities })
+			vim.lsp.config("omnisharp", {
 				capabilities = capabilities,
 				cmd = { omnisharp_path, "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
 				root_dir = require("lspconfig.util").root_pattern("*.sln", "*.csproj", ".git"),
@@ -108,12 +108,23 @@ return {
 				organize_imports_on_format = true,
 				sdk_include_prereleases = true,
 			})
-			lspconfig.glsl_analyzer.setup({
+			vim.lsp.config("glsl_analyzer", {
 				capabilities = capabilities,
 				filetypes = { "vert", "frag", "geom", "comp" },
 			})
-			lspconfig.shader_lang.setup({
+			vim.lsp.config("shader_lang", {
 				capabilities = capabilities,
+			})
+
+			vim.lsp.enable({
+				"ts_ls",
+				"angularls",
+				"html",
+				"lua_ls",
+				"clangd",
+				"omnisharp",
+				"glsl_analyzer",
+				"shader_lang",
 			})
 
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
