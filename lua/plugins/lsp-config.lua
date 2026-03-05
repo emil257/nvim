@@ -36,7 +36,7 @@ return {
 			})
 
 			-- Paths
-			local mason_dir = vim.fn.stdpath("data") .. "/mason/packages/shader-language-server"
+			local mason_dir = vim.fn.stdpath("data") .. "/lsp_servers/shader-language-server"
 			local publish_dir_intel = mason_dir .. "/Server/bin/Release/net7.0/osx-x64/publish/shader-ls"
 			local publish_dir_arm = mason_dir .. "/Server/bin/Release/net7.0/osx-arm64/publish/shader-ls"
 
@@ -103,7 +103,8 @@ return {
 			vim.lsp.config("omnisharp", {
 				capabilities = capabilities,
 				cmd = { omnisharp_path, "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
-				root_dir = require("lspconfig.util").root_pattern("*.sln", "*.csproj", ".git"),
+				-- root_dir = require("lspconfig.util").root_pattern("*.sln", "*.csproj", ".git"),
+				filetypes = { "cs", "vb" },
 				enable_roslyn_analyzers = true,
 				organize_imports_on_format = true,
 				sdk_include_prereleases = true,
